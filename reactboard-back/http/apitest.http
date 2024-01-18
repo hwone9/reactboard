@@ -1,0 +1,8 @@
+### 1. 리스트조회api
+GET http://localhost:8081/board
+Content-Type: application/json
+
+### 2. 상세조회api
+GET http://localhost:8081/board/1
+Content-Type: application/json
+
