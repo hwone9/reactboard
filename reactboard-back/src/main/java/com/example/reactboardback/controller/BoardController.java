@@ -1,6 +1,5 @@
 package com.example.reactboardback.controller;
 
-import com.example.reactboardback.dto.BoardSaveDto;
 import com.example.reactboardback.entity.BoardEntity;
 import com.example.reactboardback.service.BoardService;
 import com.example.reactboardback.util.Header;
