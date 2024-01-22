@@ -6,3 +6,26 @@ Content-Type: application/json
 GET http://localhost:8081/board/1
 Content-Type: application/json
 
+### 3. 등록 api
+POST http://localhost:8081/board
+Content-Type: application/json
+
+{
+  "title" : "api test",
+  "contents" : "test",
+  "created_by" : "test"
+}
+
+### 4. UPDATE API
+PATCH http://localhost:8081/board
+Content-Type: application/json
+
+{
+  "idx" : 98,
+  "title": "title test",
+  "contents" : "update test",
+  "createdBy": "작성자98"
+}
+
+### 5. 삭제api
+DELETE http://localhost:8081/board/1

@@ -1,6 +1,5 @@
 package com.example.reactboardback.service;
 
-import com.example.reactboardback.dto.BoardSaveDto;
 import com.example.reactboardback.entity.BoardEntity;
 import com.example.reactboardback.mapper.BoardMapper;
 import com.example.reactboardback.util.Header;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -44,19 +44,19 @@ public class BoardService {
         return Header.OK(boardMapper.getBoardOne(idx));
     }
 
-    public Header<BoardEntity> insertBoard(BoardSaveDto boardSaveDto) {
-        BoardEntity entity = boardSaveDto.toEntity();
-        if (boardMapper.insertBoard(entity) > 0) {
-            return Header.OK(entity);
+    public Header<BoardEntity> insertBoard(Map<String,Object> paramMap) {
+//        BoardEntity entity = boardSaveDto.toEntity();
+        if (boardMapper.insertBoard(paramMap) > 0) {
+            return Header.OK();
         } else {
             return Header.ERROR("ERROR");
         }
     }
 
-    public Header<BoardEntity> updateBoard(BoardSaveDto boardSaveDto) {
-        BoardEntity entity = boardSaveDto.toEntity();
-        if (boardMapper.updateBoard(entity) > 0) {
-            return Header.OK(entity);
+    public Header<BoardEntity> updateBoard(Map<String,Object> paramMap) {
+//        BoardEntity entity = boardSaveDto.toEntity();
+        if (boardMapper.updateBoard(paramMap) > 0) {
+            return Header.OK();
         } else {
             return Header.ERROR("ERROR");
         }

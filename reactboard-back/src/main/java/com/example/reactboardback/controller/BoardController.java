@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,13 +29,13 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    Header<BoardEntity> createBoard(@RequestBody BoardSaveDto boardSaveDto) {
-        return boardService.insertBoard(boardSaveDto);
+    Header<BoardEntity> createBoard(@RequestBody Map<String,Object> paramMap) {
+        return boardService.insertBoard(paramMap);
     }
 
     @PatchMapping("/board")
-    Header<BoardEntity> updateBoard(@RequestBody BoardSaveDto boardSaveDto) {
-        return boardService.updateBoard(boardSaveDto);
+    Header<BoardEntity> updateBoard(@RequestBody Map<String,Object> paramMap) {
+        return boardService.updateBoard(paramMap);
     }
 
     @DeleteMapping("/board/{idx}")

@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
@@ -23,9 +24,9 @@ public interface BoardMapper {
 
     BoardEntity getBoardOne(Long idx);
 
-    int insertBoard(BoardEntity entity);
+    int insertBoard(Map<String,Object> paramMap);
 
-    int updateBoard(BoardEntity entity);
+    int updateBoard(Map<String,Object> paramMap);
 
     int deleteBoard(Long idx);
 }
