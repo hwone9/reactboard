@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
@@ -17,10 +17,7 @@ const BoardUpdate = () => {
     }
     
     const updateBoard = async () => {
-        setBoard({
-            ...board,
-            ["idx"]: idx,
-        });
+        board.idx = idx;
         await axios.patch(`/board`, board).then((res) => {
             alert("수정완료!!!");
             navigate(`/board/${idx}`);
