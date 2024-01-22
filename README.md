@@ -12,3 +12,4 @@
 ### package manager
 1. npm install -g yarn
 2. yarn add axios
+3. yarn start
