@@ -28,7 +28,7 @@ const BoardDetail = () => {
                     idx={board.idx}
                     title={board.title}
                     contents={board.contents}
-                    createdBy={board.createdBy}
+                    createdBy={board.created_by}
                 />
             )}
         </div>
