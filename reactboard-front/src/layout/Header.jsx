@@ -1,13 +1,19 @@
+import styles from  "../styles/Header.module.css";
+
 import React from "react";
+import {NavLink} from "react-router-dom";
 
 const Header = ()=>{
     return(
-        <header>
-            <a href="/">홈</a>
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            <a href="/board">게시판</a>
-            <hr/>
-        </header>
+        <div>
+            <header className={styles.nav}>
+                <NavLink to="/">홈</NavLink>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <NavLink to="/board">게시판</NavLink>
+                <hr/>
+            </header>
+        </div>
+
     )
 }
 

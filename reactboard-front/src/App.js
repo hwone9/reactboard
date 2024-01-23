@@ -1,3 +1,5 @@
+import "../src/styles/default.css";
+
 import {Route, Routes} from "react-router-dom";
 import BoardList from "./routes/BoardList";
 import Home from "./routes/Home";
