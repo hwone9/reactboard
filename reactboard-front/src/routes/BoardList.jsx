@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import * as util from "../js/Util";
 
 const BoardList = () => {
     const navigate = useNavigate();
@@ -26,26 +26,25 @@ const BoardList = () => {
             .map((e) => e.join('='))
             .join('&');
 
-        const resp = await (
-            await axios.get('/board?' + queryString)
-        ).data; // 2) 게시글 목록 데이터에 할당
+        let resp = await util.process("get",`/board?${queryString}`, null); // 2) 게시글 목록 데이터에 할당
+        if (resp.success) {
+            resp = resp.resData;
+            setBoardList(resp.data); // 3) boardList 변수에 할당
+            const pngn = resp.pagination;
 
-        setBoardList(resp.data); // 3) boardList 변수에 할당
-        const pngn = resp.pagination;
+            const { endPage, nextBlock, prevBlock, startPage, totalPageCnt } = pngn;
 
-        const { endPage, nextBlock, prevBlock, startPage, totalPageCnt } = pngn;
+            setCurPage(search.page);
+            setPrevBlock(prevBlock);
+            setNextBlock(nextBlock);
+            setLastPage(totalPageCnt);
 
-        setCurPage(search.page);
-        setPrevBlock(prevBlock);
-        setNextBlock(nextBlock);
-        setLastPage(totalPageCnt);
-
-        const tmpPages = [];
-        for (let i = startPage; i <= endPage; i++) {
-            tmpPages.push(i);
+            const tmpPages = [];
+            for (let i = startPage; i <= endPage; i++) {
+                tmpPages.push(i);
+            }
+            setPageList(tmpPages);
         }
-        console.log(tmpPages);
-        setPageList(tmpPages);
     };
 
     const moveToWrite = () => {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {useParams} from "react-router-dom";
+import * as util from "../js/Util";
 import Board from "../components/Board";
 
 
@@ -10,9 +10,12 @@ const BoardDetail = () => {
     const [loading, setLoading] = useState(false);
 
     const getBoardDetail = async () => {
-        const resp = await (await axios.get(`/board/${idx}`)).data;
-        setBoard(resp.data);
-        setLoading(true);
+        let resp = await util.process("get",`/board/${idx}`, null);
+        if (resp.success) {
+            resp = resp.resData;
+            setBoard(resp.data);
+            setLoading(true);
+        }
     }
 
     useEffect(()=>{
@@ -29,7 +32,7 @@ const BoardDetail = () => {
                     idx={board.idx}
                     title={board.title}
                     contents={board.contents}
-                    createdBy={board.created_by}
+                    createdBy={board.createdBy}
                 />
             )}
         </div>

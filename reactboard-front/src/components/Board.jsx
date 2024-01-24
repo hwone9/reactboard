@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import * as util from "../js/Util";
 
 const Board = ({idx, title, contents, createdBy}) => {
     console.log(idx);
@@ -11,10 +11,10 @@ const Board = ({idx, title, contents, createdBy}) => {
     
     const deleteBoard = async () => {
         if (window.confirm('게시글을 삭제하시겠습니까?')) {
-            await axios.delete(`/board/${idx}`).then((res) => {
-                alert('삭제되었습니다.');
+            let resp = await util.process("delete",`/board/${idx}`, null);
+            if (resp.success) {
                 navigate('/board');
-            });
+            }
         }
     }
     

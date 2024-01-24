@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
-
+import * as util from "../js/Util";
 
 const BoardWrite = () => {
     const navigate = useNavigate();
@@ -17,14 +16,11 @@ const BoardWrite = () => {
             [name]: value,
         });
     }
+    // 2) 게시글 목록 데이터에 할당
     const saveBoard = async () => {
-        try{
-            await axios.post(`/board`, board).then((res) => {
-                navigate('/board');
-            });
-        }catch (e) {
-            alert("error!!!");
-            console.log(e);
+        let resp = await util.process("post",`/board`, board);
+        if (resp.success) {
+            navigate('/board');
         }
     };
     const backToList = () => {
