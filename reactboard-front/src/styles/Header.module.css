@@ -1,13 +1,14 @@
-.nav {
+.header {
     padding: 30px;
     font-size: 15px;
+    position: fixed;
 }
 
-.nav a {
+.header a {
     font-weight: bold;
     color: #2c3e50;
 }
 
-.nav a[class="active"] {
+.header a[class="active"] {
     color: #42b983;
 }

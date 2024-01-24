@@ -1,3 +1,15 @@
-.black_nav{
-    background-color: aquamarine;
+.outerDiv {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    margin: 0;
+    padding-top: 80px;
+}
+
+.innerDiv {
+    display: inline-block;
+    width: 90%;
+    text-align: left;
+    max-height: fit-content;
+    margin-left: 30px;
 }

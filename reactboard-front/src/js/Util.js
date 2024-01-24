@@ -15,16 +15,16 @@ export async function process(method, url, param) {
             method: method,
             data: param
         })).data;
-        console.log(`request url : ${url}`);
-        console.log(`request : ${param}`);
-        console.log(`response : `);
-        console.log(resp);
+        // console.log(`request url : ${url}`);
+        // console.log(`request : ${param}`);
+        // console.log(`response : `);
+        // console.log(resp);
         resData.success = true;
         resData.resData = resp;
     } catch (error) {
-        console.log(`request : ${param}`);
-        console.log(`response error:`);
-        console.log(error.response);
+        // console.log(`request : ${param}`);
+        // console.log(`response error:`);
+        // console.log(error.response);
         resData.success = false;
         resData.resData = error.response;
 

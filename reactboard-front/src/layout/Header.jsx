@@ -6,7 +6,7 @@ import {NavLink} from "react-router-dom";
 const Header = ()=>{
     return(
         <div>
-            <header className={styles.nav}>
+            <header className={styles.header}>
                 <NavLink to="/">홈</NavLink>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <NavLink to="/board">게시판</NavLink>
