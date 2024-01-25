@@ -1,5 +1,3 @@
-import "../src/styles/default.css";
-
 import {Route, Routes} from "react-router-dom";
 import Home from './views/Home';
 import BoardList from './views/boards/BoardList';
