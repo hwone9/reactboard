@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import * as util from "../js/Util";
+import * as util from "../../js/Util";
 
 const BoardList = () => {
     const navigate = useNavigate();

@@ -1,30 +1,30 @@
 import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import * as util from "../js/Util";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
+import * as util from "../../js/Util";
 
-const BoardWrite = () => {
+const BoardUpdate = () => {
     const navigate = useNavigate();
-    const [board, setBoard] = useState({
-        "title": "",
-        "contents": "",
-        "createdBy": ""
-    });
-    const onChange = (event)=>{
+    const { idx } = useParams(); // /board/:idx와 동일한 변수명으로 데이터를 꺼낼 수 있습니다.
+    const {state} = useLocation();
+    const [board, setBoard] = useState(state);
+
+    const onChange = (event) => {
         const { value, name } = event.target; //event.target에서 name과 value만 가져오기
         setBoard({
             ...board,
             [name]: value,
         });
     }
-    // 2) 게시글 목록 데이터에 할당
-    const saveBoard = async () => {
-        let resp = await util.process("post",`/board`, board);
+    
+    const updateBoard = async () => {
+        let resp = await util.process("patch",`/board`, board);
         if (resp.success) {
-            navigate('/board');
+            navigate(`/board/${idx}`);
         }
-    };
+    }
+    
     const backToList = () => {
-        navigate("/board");
+        navigate(`/board/${idx}`);
     }
 
     return (
@@ -56,11 +56,11 @@ const BoardWrite = () => {
             </div>
             <br/>
             <div>
-                <button onClick={saveBoard}>저장</button>
+                <button onClick={updateBoard}>수정</button>
                 <button onClick={backToList}>취소</button>
             </div>
         </div>
     )
 }
 
-export default BoardWrite
+export default BoardUpdate;

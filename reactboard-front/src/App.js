@@ -1,11 +1,11 @@
 import "../src/styles/default.css";
 
 import {Route, Routes} from "react-router-dom";
-import BoardList from "./routes/BoardList";
-import Home from "./routes/Home";
-import BoardDetail from "./routes/BoardDetail";
-import BoardWrite from "./routes/BoardWrite";
-import BoardUpdate from "./routes/BoardUpdate";
+import Home from './views/Home';
+import BoardList from './views/boards/BoardList';
+import BoardDetail from './views/boards/BoardDetail';
+import BoardWrite from './views/boards/BoardWrite';
+import BoardUpdate from './views/boards/BoardUpdate';
 
 function App() {
   return (
