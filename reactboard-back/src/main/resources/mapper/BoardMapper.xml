@@ -7,7 +7,7 @@
         , TITLE
         , CONTENTS
         , CREATED_BY
-        , CREATED_AT
+        , DATE_FORMAT(CREATED_AT,'%Y-%m-%d') AS CREATED_AT
         FROM TB_BOARD
         WHERE 1=1
 

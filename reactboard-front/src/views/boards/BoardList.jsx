@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import * as util from "../../js/Util";
+import * as util from "src/js/Util";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { Box, Button, IconButton, InputBase, MenuItem, Pagination, Select, Stack } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 const BoardList = () => {
     const navigate = useNavigate();
@@ -52,7 +61,8 @@ const BoardList = () => {
     };
 
     const onClick = (event) => {
-        let value = event.target.value;
+        // let value = event.target.value;
+        let value = event.target.outerText;
         setSearch({
             ...search,
             page: value,
@@ -87,49 +97,59 @@ const BoardList = () => {
     }, [search]);
 
     return (
-        <div>
-            <ul>
-                {boardList.map((board) => (
-                    // 4) map 함수로 데이터 출력
-                    <li key={board.idx}>
-                        <Link to={`/board/${board.idx}`}>{board.title}</Link>
-                    </li>
-                ))}
-            </ul>
-            <div>
-                <button onClick={onClick} value={1}>
-                    &lt;&lt;
-                </button>
-                <button onClick={onClick} value={prevBlock}>
-                    &lt;
-                </button>
-                {pageList.map((page, index) => (
-                    <button key={index} onClick={onClick} value={page}>
-                        {page}
-                    </button>
-                ))}
-                <button onClick={onClick} value={nextBlock}>
-                    &gt;
-                </button>
-                <button onClick={onClick} value={lastPage}>
-                    &gt;&gt;
-                </button>
-            </div>
-            <br />
-            <div>
-                <select name="sk" onChange={onChange}>
-                    <option value="">-전체-</option>
-                    <option value="title">제목</option>
-                    <option value="contents">내용</option>
-                </select>
-                <input type="text" name="sv" id="" onChange={onChange} />
-                <button onClick={onSearch}>검색</button>
-            </div>
-            <br />
-            <div>
-                <button onClick={moveToWrite}>글쓰기</button>
-            </div>
-        </div>
+        <Box>
+            <Box>
+                <Select name='sk' defaultValue={search.sk}
+                        displayEmpty autoWidth sx={{height: '40px'}}
+                        onChange={onChange} >
+                    <MenuItem value="">선택</MenuItem>
+                    <MenuItem value="title">제목</MenuItem>
+                    <MenuItem value="contents">내용</MenuItem>
+                </Select>
+                <InputBase sx={{ ml: 1, flex: 1 }} placeholder="검색어를 입력하세요"
+                            type='text' name='sv' onChange={onChange} />
+                <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={onSearch}>
+                    <SearchIcon />
+                </IconButton>
+                
+                <Button variant="contained" onClick={moveToWrite}>글쓰기</Button>    
+            </Box>
+            
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>No</TableCell>
+                        <TableCell align="right">title</TableCell>
+                        <TableCell align="right">contents</TableCell>
+                        <TableCell align="right">writer</TableCell>
+                        <TableCell align="right">created at</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {boardList.map((row) => (
+                        <TableRow key={row.idx}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                            <TableCell component="th" scope="row"> {row.idx}</TableCell>
+                            <TableCell align="right">
+                                <Link to={`/board/${row.idx}`}>{row.title}</Link>
+                            </TableCell>
+                            <TableCell align="right">{row.contents}</TableCell>
+                            <TableCell align="right">{row.createdBy}</TableCell>
+                            <TableCell align="right">{row.createdAt}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <Stack alignItems="center" sx={{marginTop: "30px"}}>
+                <Pagination count={lastPage} 
+                            color="primary" 
+                            sx={{textAlign: "center"}}
+                            onChange={(e) => onClick(e)} />
+            </Stack>
+        </Box>
     );
 };
 

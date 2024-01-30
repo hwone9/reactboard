@@ -1,20 +1,28 @@
-import {Route, Routes} from "react-router-dom";
-import Home from './views/Home';
-import BoardList from './views/boards/BoardList';
-import BoardDetail from './views/boards/BoardDetail';
-import BoardWrite from './views/boards/BoardWrite';
-import BoardUpdate from './views/boards/BoardUpdate';
+// import {Route, Routes} from "react-router-dom";
+// import Home from './views/Home';
+// import BoardList from './views/boards/BoardList';
+// import BoardDetail from './views/boards/BoardDetail';
+// import BoardWrite from './views/boards/BoardWrite';
+// import BoardUpdate from './views/boards/BoardUpdate';
+
+import { Box, CssBaseline, ThemeProvider } from '@mui/material';
+import { useRoutes } from 'react-router-dom';
+import Router from './routes/Router';
+
+import { baselightTheme } from "./theme/DefaultColors";
 
 function App() {
+  const routing = useRoutes(Router);
+  const theme = baselightTheme;
   return (
-      <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/board" element={<BoardList/>}/>
-          <Route path="/board/:idx" element={<BoardDetail/>}/>
-          <Route path="/write" element={<BoardWrite/>}/>
-          <Route path="/update/:idx" element={<BoardUpdate/>}/>
-      </Routes>
+    <ThemeProvider theme={theme}>
+      <Box>
+        <CssBaseline />
+        {routing}
+      </Box>
+    </ThemeProvider>
   );
 }
 
 export default App;
+

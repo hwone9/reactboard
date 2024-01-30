@@ -18,5 +18,5 @@ public class BoardEntity {
     private String title;
     private String contents;
     private String createdBy;
-    private Date createdAt;
+    private String createdAt;
 }

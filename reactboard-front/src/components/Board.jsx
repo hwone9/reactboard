@@ -1,6 +1,8 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import * as util from "../js/Util";
+import Button from '@mui/material/Button';
+import { Box, Card, CardContent, Divider, Stack, TextField, Typography } from "@mui/material";
 
 const Board = ({idx, title, contents, createdBy}) => {
     console.log(idx);
@@ -22,17 +24,28 @@ const Board = ({idx, title, contents, createdBy}) => {
         navigate("/board");
     }
     return(
-        <div>
-            <h2>{title}</h2>
-            <h5>{createdBy}</h5>
-            <hr/>
-            <p>{contents}</p>
-            <div>
-                <button onClick={moveToUpdate}>수정</button>
-                <button onClick={deleteBoard}>삭제</button>
-                <button onClick={moveToList}>목록</button>
-            </div>
-        </div>
+        <Box>
+            <Card sx={{ p: 0, position: 'relative' }}
+                  elevation={9}
+                  variant={undefined} >
+                <CardContent>
+                    <Typography variant="h1">{title}</Typography>
+                    <Typography variant="body1" color="textSecondary" sx={{margin: '10px 0 10px 3px'}}>{createdBy}</Typography>
+                    <Divider sx={{ bgcolor: '#eee' , margin: '15px 0'}} />
+                    <TextField value={contents} label="내용"
+                                defaultValue="내용을 입력해주세요."
+                                sx={{width: '100%'}}
+                                multiline disabled
+                                rows={3} />
+                </CardContent>
+            </Card>
+            
+            <Stack direction="row" spacing={2} sx={{marginTop: '25px'}}>
+                <Button variant="contained" onClick={moveToUpdate}>수정</Button>
+                <Button variant="outlined" color="error" onClick={deleteBoard}>삭제</Button>
+                <Button variant="outlined" onClick={moveToList}>목록</Button>
+            </Stack>
+        </Box>
     )
 }
 
