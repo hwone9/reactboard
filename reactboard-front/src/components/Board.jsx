@@ -11,9 +11,9 @@ const Board = ({idx, title, contents, createdBy}) => {
         navigate(`/update/${idx}` , {state: {"idx":idx, "title":title, "contents":contents, "createdBy":createdBy}});//파라미터 전달
     }
     
-    const deleteBoard = async () => {
+    const deleteBoard = () => {
         if (window.confirm('게시글을 삭제하시겠습니까?')) {
-            let resp = await util.process("delete",`/board/${idx}`, null);
+            let resp = util.callApi("delete",`/board/${idx}`, null);
             if (resp.success) {
                 navigate('/board');
             }

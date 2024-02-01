@@ -9,8 +9,8 @@ const BoardDetail = () => {
     const [board, setBoard] = useState({});
     const [loading, setLoading] = useState(false);
 
-    const getBoardDetail = async () => {
-        let resp = await util.process("get",`/board/${idx}`, null);
+    const getBoardDetail = () => {
+        let resp = util.callApi("get",`/board/${idx}`, null);
         if (resp.success) {
             resp = resp.resData;
             setBoard(resp.data);
