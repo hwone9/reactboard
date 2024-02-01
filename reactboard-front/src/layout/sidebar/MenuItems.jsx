@@ -3,6 +3,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
 import AddTaskIcon from '@mui/icons-material/AddTask';
+import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 
 const Menuitems = [
   {
@@ -17,9 +18,9 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: 'Todos',
-    icon: FormatListBulletedIcon,
-    href: '/todo',
+    title: 'Work',
+    icon: DomainVerificationIcon,
+    href: '/work',
   },
   {
     navlabel: true,
