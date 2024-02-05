@@ -32,6 +32,9 @@
     <update id="updateWork" parameterType="Map">
         UPDATE TB_WORK
         SET WORK = #{work}
+        <if test="done!=null and done!=''">
+            ,DONE_YN = #{done}
+        </if>
         WHERE IDX = #{idx}
             AND CUSER = #{createdBy}
     </update>
