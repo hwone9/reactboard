@@ -38,7 +38,7 @@ const WorkList = () => {
     const onClickDoneBtn = async (idx)=>{//완료여부
         let param = {
             "idx" : idx
-          }
+        }
         let resp = await util.process("patch",`/workdone`, param);
         if (resp.success) {
             resp = resp.resData;
@@ -46,36 +46,25 @@ const WorkList = () => {
         }
     }
 
-    const onChange = (event)=>{
-        const {name, value} = event.target;
-        console.log(name, value);
-    }
-
-    const onKeyDownTitle = (event,param)=>{//데이터 수정 후 엔터키 눌렀을때
+    const onKeyDownTitle = (event,idx, param)=>{//데이터 수정 후 엔터키 눌렀을때
         if(event.keyCode === 13){
             event.target.blur();
         }
     }
 
-    const updateWork = async (param)=>{//입력된 할일 focus out 발생 시 데이터 업데이트
-        console.log(param);
-        return;
-
-        // if(param.work){
-        //     let param = {
-        //         "idx" : 2,
-        //         "work": event.target.value
-        //     };
-        //     let resp = await util.process("patch",`/work`, param);
-        //     if (resp.success) {
-        //         resp = resp.resData;
-        //         getWorkList();
-        //     }   
-        // }
-
+    const updateWork = async (idx, value)=>{//입력된 할일 focus out 발생 시 데이터 업데이트
+        if(value){
+            let param = {
+                "idx" : idx,
+                "work": value
+            };
+            let resp = await util.process("patch",`/work`, param);
+            if (resp.success) {
+                resp = resp.resData;
+                getWorkList();
+            }   
+        }
     }
-    
-    
 
     const onClickDeleteBtn = async (idx)=>{//등록된 할 일 삭제
         let resp = await util.process("delete",`/work/${idx}`);
@@ -86,10 +75,6 @@ const WorkList = () => {
         }
     }
 
-    // const updateWork = (param)=>{
-    //     console.log(param);
-    // }
-
     useEffect(()=>{
         getWorkList();
         
@@ -98,7 +83,6 @@ const WorkList = () => {
         const month = today.getMonth()+1;
         const date = today.getDate();
         setToday(year + " / " + month + " / " + date);
-
     },[]);
 
     return (
@@ -117,9 +101,8 @@ const WorkList = () => {
                     <li key={work.IDX}>
                         <button type="button" onClick={()=>{onClickDoneBtn(work.IDX)}}>done</button>
                         <input type="text" name="title" defaultValue={work.WORK} 
-                                onChange={onChange}
-                                onBlur={()=>{updateWork(work)}}
-                                onKeyDown={(event)=>{onKeyDownTitle(event,work)}}
+                                onBlur={(event)=>{updateWork(work.IDX, event.target.value)}}
+                                onKeyDown={(event)=>{onKeyDownTitle(event,work.IDX, event.target.value)}}
                                 style={{textDecoration: work.DONE_YN==="Y"? 'line-through':''}}/>
                         <button type="button" onClick={()=>{onClickDeleteBtn(work.IDX)}}>delete</button>
                     </li>
