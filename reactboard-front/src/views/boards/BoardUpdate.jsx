@@ -17,8 +17,8 @@ const BoardUpdate = () => {
         });
     }
     
-    const updateBoard = async () => {
-        let resp = await util.process("patch",`/board`, board);
+    const updateBoard = () => {
+        let resp = util.callApi("patch",`/board`, board);
         if (resp.success) {
             navigate(`/board/${idx}`);
         }
