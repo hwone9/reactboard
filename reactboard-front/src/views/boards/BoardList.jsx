@@ -28,14 +28,14 @@ const BoardList = () => {
         sv: '',
     });
 
-    const getBoardList = async () => {
+    const getBoardList = () => {
         if (search.page === curPage) return; //현재 페이지와 누른 페이지가 같으면 return
 
         const queryString = Object.entries(search)
             .map((e) => e.join('='))
             .join('&');
 
-        let resp = await util.process("get",`/board?${queryString}`, null); // 2) 게시글 목록 데이터에 할당
+        let resp = util.callApi("get",`/board?${queryString}`, null); // 2) 게시글 목록 데이터에 할당
         if (resp.success) {
             resp = resp.resData;
             setBoardList(resp.data); // 3) boardList 변수에 할당
