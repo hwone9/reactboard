@@ -9,6 +9,7 @@ import BoardUpdate from '../views/boards/BoardUpdate';
 import FullLayout from '../layout/FullLayout';
 import BlankLayout from 'src/layout/BlankLayout';
 import Error from 'src/views/auth/Error';
+import WorkList from 'src/views/works/WorkList';
 
 const Router = [
   {
@@ -20,6 +21,14 @@ const Router = [
       { path: '/board/:idx', exact: true, element: <BoardDetail /> },
       { path: '/write', exact: true, element: <BoardWrite /> },
       { path: '/update/:idx', exact: true, element: <BoardUpdate /> },
+      { path: '*', exact: true, element: <Navigate to="/auth/404" /> },
+    ],
+  },
+  {
+    path: '/work',
+    element: <FullLayout />,
+    children: [
+      { path: '/work', exact: true, element: <WorkList /> },
       { path: '*', exact: true, element: <Navigate to="/auth/404" /> },
     ],
   },

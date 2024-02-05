@@ -7,7 +7,7 @@ import axios from 'axios'
  * @param {전달파라미터} param 
  * @returns 
  */
-const process = async (method, url, param) => {
+export const process = async (method, url, param) => {
     let resData = {};
     try {
         const resp = (await axios({
@@ -32,16 +32,4 @@ const process = async (method, url, param) => {
     }
     
     return resData;
-}
-
-/**
- * callApi
- * @param {통신방식} method 
- * @param {요청url} url 
- * @param {전달파라미터} param 
- * @returns 
- */
-export const callApi = async(method, url, param) => {
-    let resp = await process(method, url, param);
-    return resp;
 }
