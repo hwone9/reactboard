@@ -10,6 +10,7 @@ import FullLayout from '../layout/FullLayout';
 import BlankLayout from 'src/layout/BlankLayout';
 import Error from 'src/views/auth/Error';
 import WorkList from 'src/views/works/WorkList';
+import WorkTemplate from 'src/views/works/WorkTemplate';
 
 const Router = [
   {
@@ -32,6 +33,17 @@ const Router = [
       { path: '*', exact: true, element: <Navigate to="/auth/404" /> },
     ],
   },
+  {
+    path: '/sample',
+    element: <FullLayout />,
+    children: [
+      { path: '/sample', exact: true, element: <WorkTemplate /> },
+      { path: '*', exact: true, element: <Navigate to="/auth/404" /> },
+    ],
+  },
+
+
+
   {
     path: '/auth',
     element: <BlankLayout />,
