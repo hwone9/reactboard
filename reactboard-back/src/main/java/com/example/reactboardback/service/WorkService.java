@@ -35,14 +35,6 @@ public class WorkService {
         }
     }
 
-    public Header<List<Map<String,Object>>> updateWorkDone(Map<String,Object> paramMap) {
-        if (workMapper.updateWorkDone(paramMap) > 0) {
-            return Header.OK();
-        } else {
-            return Header.ERROR("ERROR");
-        }
-    }
-
     public Header<String> deleteWork(Map<String,Object> paramMap) {
         if (workMapper.deleteWork(paramMap) > 0) {
             return Header.OK();

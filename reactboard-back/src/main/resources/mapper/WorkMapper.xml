@@ -39,13 +39,6 @@
             AND CUSER = #{createdBy}
     </update>
 
-    <update id="updateWorkDone" parameterType="Map">
-        UPDATE TB_WORK
-        SET DONE_YN = IF(DONE_YN='Y','N','Y')
-        WHERE IDX = #{idx}
-        AND CUSER = #{createdBy}
-    </update>
-
     <delete id="deleteWork" parameterType="Map">
         DELETE FROM TB_WORK
         WHERE IDX = #{idx}

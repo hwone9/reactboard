@@ -31,12 +31,6 @@ public class WorkController {
         return workService.updateWork(param);
     }
 
-    @PatchMapping("/workdone")
-    Header<List<Map<String,Object>>> updateWorkDone(@RequestBody Map<String,Object> param) {
-        param.put("createdBy", "user01");//로그인한 사용자
-        return workService.updateWorkDone(param);
-    }
-
     @DeleteMapping("/work/{idx}")
     Header<String> deleteBoard(@PathVariable Long idx, Map<String,Object> param) {
         param.put("createdBy", "user01");//로그인한 사용자

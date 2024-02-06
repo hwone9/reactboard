@@ -14,7 +14,5 @@ public interface WorkMapper {
 
     int updateWork(Map<String,Object> paramMap);
 
-    int updateWorkDone(Map<String,Object> paramMap);
-
     int deleteWork(Map<String,Object> paramMap);
 }

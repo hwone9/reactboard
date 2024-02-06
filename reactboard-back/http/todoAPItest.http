@@ -21,14 +21,5 @@ Content-Type: application/json
   "done": "Y"
 }
 
-### 4. UPDATE API (done)
-PATCH http://localhost:8081/workdone
-Content-Type: application/json
-
-{
-  "idx" : 2
-}
-
-
 ### 5. 삭제api
 DELETE http://localhost:8081/work/1
