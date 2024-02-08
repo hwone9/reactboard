@@ -1,57 +1,55 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React from "react";
+import { Navigate } from "react-router-dom";
 
 /* ****Pages***** */
-import BoardList from '../views/boards/BoardList';
-import BoardDetail from '../views/boards/BoardDetail';
-import BoardWrite from '../views/boards/BoardWrite';
-import BoardUpdate from '../views/boards/BoardUpdate';
-import FullLayout from '../layout/FullLayout';
-import BlankLayout from 'src/layout/BlankLayout';
-import Error from 'src/views/auth/Error';
-import WorkList from 'src/views/works/WorkList';
-import WorkTemplate from 'src/views/works/WorkTemplate';
+import BoardList from "../views/boards/BoardList";
+import BoardDetail from "../views/boards/BoardDetail";
+import BoardWrite from "../views/boards/BoardWrite";
+import BoardUpdate from "../views/boards/BoardUpdate";
+import FullLayout from "../layout/FullLayout";
+import BlankLayout from "src/layout/BlankLayout";
+import Error from "src/views/auth/Error";
+import WorkTemplate from "src/views/works/WorkTemplate";
+import User from "src/views/sample/User";
 
 const Router = [
   {
-    path: '/',
+    path: "/",
     element: <FullLayout />,
     children: [
-      { path: '/', element: <Navigate to="/board" /> },
-      { path: '/board', exact: true, element: <BoardList /> },
-      { path: '/board/:idx', exact: true, element: <BoardDetail /> },
-      { path: '/write', exact: true, element: <BoardWrite /> },
-      { path: '/update/:idx', exact: true, element: <BoardUpdate /> },
-      { path: '*', exact: true, element: <Navigate to="/auth/404" /> },
+      { path: "/", element: <Navigate to="/board" /> },
+      { path: "/board", exact: true, element: <BoardList /> },
+      { path: "/board/:idx", exact: true, element: <BoardDetail /> },
+      { path: "/write", exact: true, element: <BoardWrite /> },
+      { path: "/update/:idx", exact: true, element: <BoardUpdate /> },
+      { path: "*", exact: true, element: <Navigate to="/auth/404" /> },
     ],
   },
   {
-    path: '/work',
+    path: "/work",
     element: <FullLayout />,
     children: [
-      { path: '/work', exact: true, element: <WorkList /> },
-      { path: '*', exact: true, element: <Navigate to="/auth/404" /> },
+      { path: "/work", exact: true, element: <WorkTemplate /> },
+      { path: "*", exact: true, element: <Navigate to="/auth/404" /> },
     ],
   },
   {
-    path: '/sample',
+    path: "/sample",
     element: <FullLayout />,
     children: [
-      { path: '/sample', exact: true, element: <WorkTemplate /> },
-      { path: '*', exact: true, element: <Navigate to="/auth/404" /> },
+      { path: "/sample", exact: true, element: <WorkTemplate /> },
+      { path: "*", exact: true, element: <Navigate to="/auth/404" /> },
     ],
   },
 
-
-
   {
-    path: '/auth',
+    path: "/auth",
     element: <BlankLayout />,
     children: [
-      { path: '404', element: <Error /> },
-  //     { path: '/auth/register', element: <Register /> },
-  //     { path: '/auth/login', element: <Login /> },
-  //     { path: '*', element: <Navigate to="/auth/404" /> },
+      { path: "404", element: <Error /> },
+      //     { path: '/auth/register', element: <Register /> },
+      //     { path: '/auth/login', element: <Login /> },
+      //     { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
 ];
