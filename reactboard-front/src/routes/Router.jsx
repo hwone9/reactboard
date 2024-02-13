@@ -10,18 +10,24 @@ import FullLayout from "../layout/FullLayout";
 import BlankLayout from "src/layout/BlankLayout";
 import Error from "src/views/auth/Error";
 import WorkTemplate from "src/views/works/WorkTemplate";
-import User from "src/views/sample/User";
+import Login from "src/views/login/Login";
 
 const Router = [
   {
     path: "/",
+    element: <Login />,
+    children: [
+      { path: "*", exact: true, element: <Navigate to="/auth/404" /> },
+    ],
+  },
+  {
+    path: "/board",
     element: <FullLayout />,
     children: [
-      { path: "/", element: <Navigate to="/board" /> },
       { path: "/board", exact: true, element: <BoardList /> },
       { path: "/board/:idx", exact: true, element: <BoardDetail /> },
-      { path: "/write", exact: true, element: <BoardWrite /> },
-      { path: "/update/:idx", exact: true, element: <BoardUpdate /> },
+      { path: "/board/write", exact: true, element: <BoardWrite /> },
+      { path: "/board/update/:idx", exact: true, element: <BoardUpdate /> },
       { path: "*", exact: true, element: <Navigate to="/auth/404" /> },
     ],
   },

@@ -72,6 +72,7 @@
         UPDATE TB_BOARD
         SET TITLE = #{title}
         , CONTENTS = #{contents}
+        , CREATED_BY = #{createdBy}
         WHERE IDX = #{idx}
     </update>
 

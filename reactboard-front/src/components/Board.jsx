@@ -8,7 +8,7 @@ const Board = ({idx, title, contents, createdBy}) => {
     console.log(idx);
     const navigate = useNavigate();
     const moveToUpdate = () => {
-        navigate(`/update/${idx}` , {state: {"idx":idx, "title":title, "contents":contents, "createdBy":createdBy}});//파라미터 전달
+        navigate(`/board/update/${idx}` , {state: {"idx":idx, "title":title, "contents":contents, "createdBy":createdBy}});//파라미터 전달
     }
     
     const deleteBoard = async () => {
