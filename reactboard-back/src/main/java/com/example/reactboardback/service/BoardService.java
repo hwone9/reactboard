@@ -17,7 +17,7 @@ import java.util.Map;
 public class BoardService {
     private final BoardMapper boardMapper;
 
-    public Header<List<BoardEntity>> getBoardList(int page, int size, Search search) {
+    public Header<List<Map<String,Object>>> getBoardList(int page, int size, Search search) {
         HashMap<String, Object> paramMap = new HashMap<>();
 
         if (page <= 1) {    //페이지가 1 이하로 입력되면 0으로 고정,
@@ -29,7 +29,7 @@ public class BoardService {
         paramMap.put("sk", search.getSk());
         paramMap.put("sv", search.getSv());
 
-        List<BoardEntity> boardList = boardMapper.getBoardList(paramMap);
+        List<Map<String,Object>> boardList = boardMapper.getBoardList(paramMap);
         Pagination pagination = new Pagination(
                 boardMapper.getBoardTotalCount(paramMap),
                 page,
@@ -40,11 +40,11 @@ public class BoardService {
         return Header.OK(boardList, pagination);
     }
 
-    public Header<BoardEntity> getBoardOne(Long idx) {
+    public Header<Map<String,Object>> getBoardOne(Long idx) {
         return Header.OK(boardMapper.getBoardOne(idx));
     }
 
-    public Header<BoardEntity> insertBoard(Map<String,Object> paramMap) {
+    public Header<Map<String,Object>> insertBoard(Map<String,Object> paramMap) {
 //        BoardEntity entity = boardSaveDto.toEntity();
         if (boardMapper.insertBoard(paramMap) > 0) {
             return Header.OK();
@@ -53,7 +53,7 @@ public class BoardService {
         }
     }
 
-    public Header<BoardEntity> updateBoard(Map<String,Object> paramMap) {
+    public Header<Map<String,Object>> updateBoard(Map<String,Object> paramMap) {
 //        BoardEntity entity = boardSaveDto.toEntity();
         if (boardMapper.updateBoard(paramMap) > 0) {
             return Header.OK();

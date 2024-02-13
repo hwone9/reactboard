@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/schema/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.reactboardback.mapper.BoardMapper">
-    <select id="getBoardList" parameterType="Map" resultType="com.example.reactboardback.entity.BoardEntity">
-        SELECT IDX
-        , TITLE
-        , CONTENTS
-        , CREATED_BY
-        , DATE_FORMAT(CREATED_AT,'%Y-%m-%d') AS CREATED_AT
+    <select id="getBoardList" parameterType="Map" resultType="Map">
+        SELECT IDX                           AS idx
+        , TITLE                              AS title
+        , CONTENTS                           AS contents
+        , CREATED_BY                         AS createdBy
+        , DATE_FORMAT(CREATED_AT,'%Y-%m-%d') AS createdAt
         FROM TB_BOARD
         WHERE 1=1
 
@@ -43,12 +43,12 @@
         </if>
     </select>
 
-    <select id="getBoardOne" parameterType="Long" resultType="com.example.reactboardback.entity.BoardEntity">
-        SELECT IDX
-        , TITLE
-        , CONTENTS
-        , CREATED_BY
-        , CREATED_AT
+    <select id="getBoardOne" parameterType="Long" resultType="Map">
+        SELECT IDX    as idx
+        , TITLE       as title
+        , CONTENTS    as contents
+        , CREATED_BY  as createdBy
+        , CREATED_AT  as createdAt
         FROM TB_BOARD
         WHERE IDX = #{idx}
     </select>
