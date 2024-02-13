@@ -81,7 +81,7 @@ const WorkTemplate = ({ children }) => {
 
   return (
     <WorkTemplateDiv>
-      <WorkHead count={workList.length} />
+      <WorkHead count={workList.filter((work)=> work.DONE_YN==='N').length} />
       <WorkCreate onCreate={onCreate} />
       <WorkList workList={workList} onUpdate={onUpdate} onRemove={onRemove} />
     </WorkTemplateDiv>
