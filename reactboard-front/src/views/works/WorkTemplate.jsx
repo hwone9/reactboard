@@ -1,8 +1,8 @@
 import { styled } from "@mui/material";
 import { useEffect, useState } from "react";
-import WorkCreate from "src/components/works/WorkCreate";
-import WorkHead from "src/components/works/WorkHead";
-import WorkList from "src/components/works/WorkList";
+import WorkCreate from "src/views/works/components/WorkCreate";
+import WorkHead from "src/views/works/components/WorkHead";
+import WorkList from "src/views/works/components/WorkList";
 import * as util from "src/js/Util";
 
 const WorkTemplateDiv = styled("div")(() => ({

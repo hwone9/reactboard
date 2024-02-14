@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import * as util from "../../js/Util";
-import Board from "../../components/Board";
+import Board from "./components/Board";
 
 
 const BoardDetail = () => {
