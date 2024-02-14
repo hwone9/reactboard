@@ -1,11 +1,10 @@
-package com.example.reactboardback.service;
+package com.example.reactboardback.blog.service;
 
-import com.example.reactboardback.mapper.WorkMapper;
+import com.example.reactboardback.blog.mapper.WorkMapper;
 import com.example.reactboardback.util.Header;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

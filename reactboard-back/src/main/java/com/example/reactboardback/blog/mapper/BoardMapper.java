@@ -1,15 +1,10 @@
-package com.example.reactboardback.mapper;
+package com.example.reactboardback.blog.mapper;
 
-import com.example.reactboardback.entity.BoardEntity;
-import com.example.reactboardback.entity.BoardEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Mapper

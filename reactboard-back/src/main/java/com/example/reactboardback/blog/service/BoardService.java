@@ -1,7 +1,6 @@
-package com.example.reactboardback.service;
+package com.example.reactboardback.blog.service;
 
-import com.example.reactboardback.entity.BoardEntity;
-import com.example.reactboardback.mapper.BoardMapper;
+import com.example.reactboardback.blog.mapper.BoardMapper;
 import com.example.reactboardback.util.Header;
 import com.example.reactboardback.util.Pagination;
 import com.example.reactboardback.util.Search;

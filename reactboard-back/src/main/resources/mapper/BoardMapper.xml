@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/schema/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.reactboardback.mapper.BoardMapper">
+<mapper namespace="com.example.reactboardback.blog.mapper.BoardMapper">
     <select id="getBoardList" parameterType="Map" resultType="Map">
         SELECT IDX                           AS idx
         , TITLE                              AS title

@@ -1,7 +1,6 @@
-package com.example.reactboardback.controller;
+package com.example.reactboardback.blog.controller;
 
-import com.example.reactboardback.entity.BoardEntity;
-import com.example.reactboardback.service.BoardService;
+import com.example.reactboardback.blog.service.BoardService;
 import com.example.reactboardback.util.Header;
 import com.example.reactboardback.util.Search;
 import lombok.RequiredArgsConstructor;

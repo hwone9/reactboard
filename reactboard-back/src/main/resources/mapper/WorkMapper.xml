@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/schema/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.reactboardback.mapper.WorkMapper">
+<mapper namespace="com.example.reactboardback.blog.mapper.WorkMapper">
     <select id="getWorkList" parameterType="Map" resultType="Map">
         SELECT IDX
               ,WORK
