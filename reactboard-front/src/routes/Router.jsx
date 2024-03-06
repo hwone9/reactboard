@@ -10,12 +10,13 @@ import FullLayout from "../layout/FullLayout";
 import BlankLayout from "src/layout/BlankLayout";
 import Error from "src/views/auth/Error";
 import WorkTemplate from "src/views/works/WorkTemplate";
-import Login from "src/views/login/Login";
+import LoginTemplate from "src/views/login/LoginTemplate";
+import JoinTemplate from "src/views/login/JoinTemplate";
 
 const Router = [
   {
     path: "/",
-    element: <Login />,
+    element: <LoginTemplate />,
     children: [
       { path: "*", exact: true, element: <Navigate to="/auth/404" /> },
     ],
@@ -53,7 +54,7 @@ const Router = [
     element: <BlankLayout />,
     children: [
       { path: "404", element: <Error /> },
-      //     { path: '/auth/register', element: <Register /> },
+      { path: '/auth/join', element: <JoinTemplate /> },
       //     { path: '/auth/login', element: <Login /> },
       //     { path: '*', element: <Navigate to="/auth/404" /> },
     ],

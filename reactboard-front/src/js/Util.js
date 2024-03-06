@@ -19,16 +19,17 @@ export const process = async (method, url, param) => {
         // console.log(`request : ${param}`);
         // console.log(`response : `);
         // console.log(resp);
-        resData.success = true;
-        resData.resData = resp;
+        // resData.success = true;
+        // resData.resData = resp;
+        resData = resp;
     } catch (error) {
         // console.log(`request : ${param}`);
         // console.log(`response error:`);
         // console.log(error.response);
-        resData.success = false;
-        resData.resData = error.response;
-
-        alert("error!!");
+        // resData.success = false;
+        // resData.resData = error.response;
+        // alert("error!!");
+        resData = error;
     }
     
     return resData;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/schema/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.reactboardback.core.auth.mapper.LoginMapper">
+
+    <insert id="joinInfo" parameterType="Map">
+        INSERT INTO TB_USER
+        (
+            USER_ID
+            ,USER_NM
+            ,USER_PW
+            ,EMAIL
+            ,CDATE
+        ) VALUES (
+            #{name}
+            , #{name}
+            , #{password}
+            , #{email}
+            , NOW()
+        )
+    </insert>
+
+
+    <!--사용자정보확인-->
+    <select id="selectUserLoginInfo" parameterType="Map" resultType="Map">
+        SELECT USER_ID, USER_NM, USER_PW AS PASSWORD, EMAIL, CDATE
+        FROM TB_USER
+        WHERE USER_NM = #{userid}
+    </select>
+</mapper>
