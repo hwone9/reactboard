@@ -27,4 +27,14 @@
         FROM TB_USER
         WHERE USER_NM = #{userid}
     </select>
+
+    <update id="updateUserLoginDt" parameterType="Map">
+        UPDATE TB_USER
+        SET
+            LOGIN_CNT   		= NVL(LOGIN_CNT,0) + 1
+            , LAST_LOGIN_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        WHERE
+            USER_ID = #{userid}
+    </update>
+
 </mapper>

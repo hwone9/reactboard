@@ -36,10 +36,9 @@ const BoardList = () => {
             .join('&');
 
         let resp = await util.process("get",`/board?${queryString}`, null); // 2) 게시글 목록 데이터에 할당
-        if (resp.success) {
-            resp = resp.resData;
-            setBoardList(resp.data); // 3) boardList 변수에 할당
-            const pngn = resp.pagination;
+        if (resp.RESULT==="SUCCESS") {
+            setBoardList(resp.RES.data); // 3) boardList 변수에 할당
+            const pngn = resp.RES.pagination;
 
             const { totalPageCnt } = pngn;
 

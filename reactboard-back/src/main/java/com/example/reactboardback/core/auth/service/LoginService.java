@@ -118,4 +118,35 @@ public class LoginService {
         return resultMap;
     }
 
+
+    public Map<String, Object> actionLogin(Map<String,Object> paramMap) throws Exception {
+
+        Map<String,Object> userInfo = loginMapper.selectUserLoginInfo(paramMap);
+
+        String userId = "";
+        if( userInfo != null ) {
+            //사용자 아이디 체크
+            if( !StringUtils.isEmpty( (String)userInfo.get("USER_ID") ) ){
+                userId = (String)userInfo.get("USER_ID");
+            }
+            if( "".equals(userId) ) {
+                logger.error( "User Not Found Error : USER_ID is NULL");
+                throw new ServiceException("존재하지 않는 사용자입니다.");
+            }
+
+            String loginPwd = (String)paramMap.get("USER_PWD");
+            String userPwd = "";
+            if( !StringUtils.isEmpty( (String)userInfo.get("PASSWORD") ) ){
+                userPwd = (String)userInfo.get("PASSWORD");
+            }
+            loginMapper.updateUserLoginDt(paramMap);//로그인날짜업데이트
+            userInfo.put("USER_TYPE", "SYS");
+
+        } else {
+            logger.error( "User Not Found Error : USER_ID is NULL");
+            throw new ServiceException("존재하지 않는 사용자입니다.");
+        }
+        userInfo.remove("PASSWORD");
+        return userInfo;
+    }
 }

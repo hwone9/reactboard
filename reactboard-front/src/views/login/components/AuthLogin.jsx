@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, FormGroup, FormControlLabel, Button, Stack, Checkbox, TextField } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as util from "src/js/Util";
 
 const AuthLogin = ({ title, subtitle, subtext }) => {
+    const navigator = useNavigate();
     const [loginInfo , setLoginInfo] = useState({
         userid: '',
         userpw: ''
@@ -27,25 +28,28 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
         // $("#ENC_USER_ID").val( rsaEnc(RSAmodulus , Exponent , userId) );
         // $("#ENC_USER_PWD").val( rsaEnc(RSAmodulus , Exponent , userPwd) );
         
-        let resloginCheck = await util.process("post", `/auth/loginCheck`, loginInfo);
-        console.log(resloginCheck);
-        if (resloginCheck.RESULT === "SUCCESS") {
+        let resp = await util.process("post", `/auth/loginCheck`, loginInfo);
+        console.log(resp);
+        if (resp.RESULT === "SUCCESS") {
             // resp = resp.resData;
-            alert("로그인성공");
-            let reslogin = await util.process("post", `/login`, loginInfo);
-            console.log(reslogin);
+            // alert("로그인성공");
+            getLogin(loginInfo);
         } else {
-            alert(resloginCheck.ERR_MSG);
+            alert(resp.ERR_MSG);
         }
     
     }
 
-    const getLogin = async () => {
-        let resp = await util.process("get", `/auth/loginCheck`, loginInfo);
-        if (resp.success) {
-        resp = resp.resData;
+    const getLogin = async (param) => {
+        let resp = await util.process("post", `/login`, param);
+        console.log(resp);
+        if (resp.RESULT === "SUCCESS") {
+            // resp = resp.resData;
+            // alert("로그인성공");
+            sessionStorage.setItem("userid", loginInfo.userid);
+            navigator("/board");
         } else {
-        alert("create fail!!!!");
+            alert(resp.ERR_MSG);
         }
     };
 

@@ -14,7 +14,7 @@ const Board = ({idx, title, contents, createdBy}) => {
     const deleteBoard = async () => {
         if (window.confirm('게시글을 삭제하시겠습니까?')) {
             let resp = await util.process("delete",`/board/${idx}`, null);
-            if (resp.success) {
+            if (resp.RESULT==="SUCCESS") {
                 navigate('/board');
             }
         }

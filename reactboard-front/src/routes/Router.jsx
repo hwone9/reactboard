@@ -13,6 +13,17 @@ import WorkTemplate from "src/views/works/WorkTemplate";
 import LoginTemplate from "src/views/login/LoginTemplate";
 import JoinTemplate from "src/views/login/JoinTemplate";
 
+const authenticated = sessionStorage.getItem("userid") != null;
+const authRouter = [
+  {
+    path: "/",
+    element: <LoginTemplate />,
+    children: [
+      { path: "*", exact: true, element: <Navigate replace to="/" /> },
+    ],
+  }
+];
+
 const Router = [
   {
     path: "/",
@@ -61,4 +72,5 @@ const Router = [
   },
 ];
 
+// export default authenticated ? Router : authRouter;
 export default Router;

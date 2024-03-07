@@ -19,7 +19,7 @@ const BoardUpdate = () => {
     
     const updateBoard = async () => {
         let resp = await util.process("patch",`/board`, board);
-        if (resp.success) {
+        if (resp.RESULT==="SUCCESS") {
             navigate(`/board/${idx}`);
         }
     }

@@ -6,6 +6,7 @@ import com.example.reactboardback.util.Search;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,28 +17,68 @@ public class BoardController {
 
     //Http Get 방식으로 주소 가장 뒤 /board로 접근
     @GetMapping("/board")
-    Header<List<Map<String,Object>>> getBoardList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Search search) {
-        return boardService.getBoardList(page, size, search);
+    Map<String,Object> getBoardList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Search search) {
+        Map<String, Object> retrunMap = new HashMap<>();
+        try {
+            retrunMap.put("RESULT", "SUCCESS");
+            retrunMap.put("RES", boardService.getBoardList(page, size, search));
+        } catch (Exception e) {
+            retrunMap.put("RESULT", "ERROR");
+            retrunMap.put("ERR_MSG", e.getMessage());
+        }
+        return retrunMap;
     }
 
     //idx의 데이터 1개를 조회한다.
     @GetMapping("/board/{idx}")
-    Header<Map<String,Object>> getBoardOne(@PathVariable Long idx) {
-        return boardService.getBoardOne(idx);
+    Map<String,Object> getBoardOne(@PathVariable Long idx) {
+        Map<String, Object> retrunMap = new HashMap<>();
+        try {
+            retrunMap.put("RESULT", "SUCCESS");
+            retrunMap.put("RES", boardService.getBoardOne(idx) );
+        } catch (Exception e) {
+            retrunMap.put("RESULT", "ERROR");
+            retrunMap.put("ERR_MSG", e.getMessage());
+        }
+        return retrunMap;
     }
 
     @PostMapping("/board")
-    Header<Map<String,Object>> createBoard(@RequestBody Map<String,Object> paramMap) {
-        return boardService.insertBoard(paramMap);
+    Map<String,Object> createBoard(@RequestBody Map<String,Object> paramMap) {
+        Map<String, Object> retrunMap = new HashMap<>();
+        try {
+            retrunMap.put("RESULT", "SUCCESS");
+            retrunMap.put("RES", boardService.insertBoard(paramMap) );
+        } catch (Exception e) {
+            retrunMap.put("RESULT", "ERROR");
+            retrunMap.put("ERR_MSG", e.getMessage());
+        }
+        return retrunMap;
     }
 
     @PatchMapping("/board")
-    Header<Map<String,Object>> updateBoard(@RequestBody Map<String,Object> paramMap) {
-        return boardService.updateBoard(paramMap);
+    Map<String,Object> updateBoard(@RequestBody Map<String,Object> paramMap) {
+        Map<String, Object> retrunMap = new HashMap<>();
+        try {
+            retrunMap.put("RESULT", "SUCCESS");
+            retrunMap.put("RES", boardService.updateBoard(paramMap) );
+        } catch (Exception e) {
+            retrunMap.put("RESULT", "ERROR");
+            retrunMap.put("ERR_MSG", e.getMessage());
+        }
+        return retrunMap;
     }
 
     @DeleteMapping("/board/{idx}")
-    Header<String> deleteBoard(@PathVariable Long idx) {
-        return boardService.deleteBoard(idx);
+    Map<String,Object> deleteBoard(@PathVariable Long idx) {
+        Map<String, Object> retrunMap = new HashMap<>();
+        try {
+            retrunMap.put("RESULT", "SUCCESS");
+            retrunMap.put("RES", boardService.deleteBoard(idx) );
+        } catch (Exception e) {
+            retrunMap.put("RESULT", "ERROR");
+            retrunMap.put("ERR_MSG", e.getMessage());
+        }
+        return retrunMap;
     }
 }

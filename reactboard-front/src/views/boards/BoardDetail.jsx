@@ -11,9 +11,8 @@ const BoardDetail = () => {
 
     const getBoardDetail = async () => {
         let resp = await util.process("get",`/board/${idx}`, null);
-        if (resp.success) {
-            resp = resp.resData;
-            setBoard(resp.data);
+        if (resp.RESULT === "SUCCESS") {
+            setBoard(resp.RES.data);
             setLoading(true);
         }
     }

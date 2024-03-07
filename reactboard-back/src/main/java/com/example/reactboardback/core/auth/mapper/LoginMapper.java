@@ -12,4 +12,6 @@ public interface LoginMapper {
 
     Map<String,Object> selectUserLoginInfo(Map<String, Object> paramMap);
 
+    int updateUserLoginDt(Map<String, Object> paramMap);
+
 }

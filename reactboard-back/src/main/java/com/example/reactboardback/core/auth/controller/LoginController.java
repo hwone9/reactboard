@@ -3,6 +3,7 @@ package com.example.reactboardback.core.auth.controller;
 import com.example.reactboardback.core.auth.service.LoginService;
 import com.example.reactboardback.core.crypt.DigestUtil;
 import com.example.reactboardback.core.exception.ServiceException;
+import com.example.reactboardback.core.util.UserSessionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,11 +24,12 @@ public class LoginController {
 
     /**
      * 회원가입
+     *
      * @param param
      * @return
      */
     @PatchMapping("/auth/join")
-    Map<String,Object> joinInfo(@RequestBody Map<String,Object> param) {
+    Map<String, Object> joinInfo(@RequestBody Map<String, Object> param) {
         logger.debug("========= joinInfo  start =========");
         Map<String, Object> retrunMap = new HashMap<String, Object>();
 
@@ -63,22 +65,23 @@ public class LoginController {
 
     /**
      * 로그인체크
+     *
      * @param paramMap 로그인정보
-     * @param request 세선처리를 위한 HttpServletRequest
+     * @param request  세선처리를 위한 HttpServletRequest
      * @return 로그인결과(세션정보)
      */
     @PostMapping("/auth/loginCheck")
-    public Map<String, Object> loginCheck(@RequestBody Map<String, Object> paramMap , HttpServletRequest request){
+    public Map<String, Object> loginCheck(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) {
         Map<String, Object> retrunMap = new HashMap<String, Object>();
 
         try {
-            Map<String,Object> chkMap = loginService.loginChk(paramMap);
+            Map<String, Object> chkMap = loginService.loginChk(paramMap);
 
-            if(chkMap.get("CODE") == "S" ) {
+            if (chkMap.get("CODE") == "S") {
                 retrunMap.put("RESULT", "SUCCESS");
 //                jsonData.addFields("MODULE", chkMap.get("MODULE"));
 
-            }else {
+            } else {
                 retrunMap.put("RESULT", "ERROR");
                 retrunMap.put("ERR_MSG", chkMap.get("MSG").toString());
 //                jsonData.addFields("MODULE", "");
@@ -96,333 +99,112 @@ public class LoginController {
 
     /**
      * 로그인처리
+     *
      * @param paramMap 로그인정보
-     * @param request 세션처리를 위한 HttpServletRequest
+     * @param request  세션처리를 위한 HttpServletRequest
      * @return 로그인결과
      * @throws Exception
      */
     @PostMapping("/login")
-    public String actionLogin(@RequestParam Map<String,Object> paramMap, HttpServletRequest request, ModelMap model, RedirectAttributes redirectAttr) throws Exception {
-        Map<String,Object> userinfo  = null;
+    public Map<String, Object> actionLogin(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+        Map<String, Object> userinfo = null;
+        Map<String, Object> retrunMap = new HashMap<>();
         try {
-            userinfo  = UserSessionUtil.getUserSession(request);
+            userinfo = UserSessionUtil.getUserSession(request);
         } catch (Exception e) {
             logger.error(e.getMessage());
+            retrunMap.put("RESULT", "ERROR");
+            retrunMap.put("ERR_MSG", e.getMessage());
+            retrunMap.put("redirect", "login");
+            return retrunMap;
         }
-        if (null!=userinfo)	{
-            if (((String)paramMap.get("USER_ID")).equals((String)userinfo.get("USER_ID"))) {
-                return "redirect:/main.do";
+        if (null != userinfo) {
+            if (((String) paramMap.get("userid")).equals((String) userinfo.get("USER_ID"))) {
+                retrunMap.put("RESULT", "SUCCESS");
+                retrunMap.put("redirect", "main");
+                return  retrunMap;
             }
         }
 
         try {
-            if( logger.isDebugEnabled()) {
-                logger.debug("paramMap = " + paramMap);
-                logger.debug("getRequestedSessionId = " + request.getRequestedSessionId());
-            }
 
-            Map<String,Object> userInfo = loginAuthService.actionLogin(paramMap);
-
-            if( logger.isDebugEnabled()) {
-                logger.debug("userInfo = " + userInfo);
-            }
+            Map<String, Object> userInfo = loginService.actionLogin(paramMap);
             boolean isValidUser = false;
-
-            if (userInfo != null ) {
-                String userId = (String)userInfo.get("USER_ID");
-
-                if( userId != null ) {
+            if (userInfo != null) {
+                String userId = (String) userInfo.get("USER_ID");
+                if (userId != null) {
                     isValidUser = true;
                 }
             }
 
             //■■■■■■ SYS(내부) 로그인 구간
-            if(userInfo.get("USER_TYPE").equals("SYS")){
-
-                if( isValidUser == true ) {
-                    List<String> userRoleList = loginAuthService.selectUserRoleListForLogin(paramMap);
-                    if (0==userRoleList.size())
-                    {
-                        try {
-                            insertAccessHist(_userId, "N", "메뉴권한 없음");
-                        } catch (Exception e) {
-                            logger.error(e.getMessage());
-                        }
-
-                        model.addAttribute("message", getMessage("M1000022"));
-                        return "loginView";
-                    }
-
-                    userInfo.put("ROLE_LIST", userRoleList);
-                    //				userInfo.put("PUR_USER", "N");
-                    //				if(userRoleList.contains("PUR002") || userRoleList.contains("PUR003") || userRoleList.contains("SYS001")) {
-                    //					//구매롤 유저
-                    //					userInfo.put("PUR_USER", "Y");
-                    //				}
-
-                    List<String> deptRoleList = loginAuthService.selectDeptRoleListForLogin(paramMap);
-                    userInfo.put("DEPT_ROLE", deptRoleList);
-
-                    paramMap.put("ROLE_LIST", userRoleList);
-                    paramMap.put("MODULE_TYPE", _moduleType);
-                    List<Map<String,Object>> userMenuList = loginAuthService.selectUserMenuList(paramMap);
-
-                    List<Map<String,Object>> moduleList = loginAuthService.selectModuleList(paramMap);
-
-                    LinkedHashMap<String,Object> topMenuLinkedMap = new LinkedHashMap<String,Object>();
-                    LinkedHashMap<String,Object> leftMenuLinkedMap = new LinkedHashMap<String,Object>();
-                    LinkedHashMap<String,Object> menuLinkedMap = new LinkedHashMap<String,Object>();
-
-                    if( userMenuList != null ) {
-                        String currTopMenuNo = "";
-
-
-                        List<Map<String,Object>> childMenuList = null;
-                        for( int i = 0, nSize = userMenuList.size(); i < nSize; i++) {
-                            Map<String,Object> menuInfo = userMenuList.get(i);
-                            String menuNo = StringUtils.defaultIfBlank((String)menuInfo.get("MENU_CD"), "");
-                            if( ! "".equals(menuNo)) {
-                                menuLinkedMap.put(menuNo, menuInfo);
-
-                                BigDecimal bdMenuDepth = new BigDecimal(String.valueOf(menuInfo.get("MENU_DEPTH")));
-                                if( bdMenuDepth.compareTo( new BigDecimal(1)) == 0 ) {
-                                    if( ! currTopMenuNo.equals( menuNo )) {
-                                        currTopMenuNo = menuNo;
-                                        childMenuList = new ArrayList<Map<String,Object>>();
-                                        menuInfo.put("CHILD_MENU_LIST", childMenuList);
-                                        topMenuLinkedMap.put(menuNo, menuInfo);
-                                    }
-                                }else {
-                                    if( bdMenuDepth.compareTo( new BigDecimal(2)) == 0 ) {
-                                        if( ! currTopMenuNo.equals( menuNo )) {
-                                            currTopMenuNo = menuNo;
-                                            childMenuList = new ArrayList<Map<String,Object>>();
-                                            menuInfo.put("CHILD_MENU_LIST", childMenuList);
-                                            leftMenuLinkedMap.put(menuNo, menuInfo);
-                                        }
-                                    } else {
-                                        if( childMenuList != null ) {
-                                            childMenuList.add(menuInfo);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    userInfo.put("BIZ_TOP_MENU_MAP", moduleList);
-                    userInfo.put("TOP_MENU_MAP", topMenuLinkedMap);
-                    userInfo.put("LEFT_MENU_MAP", leftMenuLinkedMap);
-                    userInfo.put("MENU_MAP", menuLinkedMap);
-
-                    List<Map<String,Object>> userFavoriteMenuList = loginAuthService.selectUserFavoriteMenuList(paramMap);
-                    userInfo.put("FAVORITE_MENU", userFavoriteMenuList);
-
-                    String srvType		=	"";
-                    String srvTypeName	=	"";
-                    if (PropertiesUtil.isRealMode()) {
-                        srvType		=	"REAL";
-                        srvTypeName =	"";
-                    } else if (PropertiesUtil.isDevMode()) {
-                        srvType		=	"DEV";
-                        srvTypeName =	"개발서버";
-                    } else {
-                        srvType		=	"LOCAL";
-                        srvTypeName =	"LOCAL SYSTEM";
-                    }
-                    userInfo.put("SRV_TYPE", srvType);
-                    userInfo.put("SRV_TYPE_NM", srvTypeName);
+            if (userInfo.get("USER_TYPE").equals("SYS")) {
+                if (isValidUser == true) {
+//                    List<String> userRoleList = loginService.selectUserRoleListForLogin(paramMap);//권한조회
+//                    if (0==userRoleList.size()) {
+//                        try {
+//                            insertAccessHist(_userId, "N", "메뉴권한 없음");
+//                        } catch (Exception e) {
+//                            logger.error(e.getMessage());
+//                        }
+//
+//                        model.addAttribute("message", getMessage("M1000022"));
+//                        return "loginView";
+//                    }
+//                    userInfo.put("ROLE_LIST", userRoleList);
+//                    paramMap.put("ROLE_LIST", userRoleList);
 
                     UserSessionUtil.setUserSession(request, userInfo);
 
-                    if( logger.isDebugEnabled()) {
-                        logger.debug( "LOGIN_INFO =" + UserSessionUtil.getUserSession(request) );
-                    }
+//                    try {
+//                        insertAccessHist(_userId, "Y","");//로그저장
+//                    } catch (Exception e) {
+//                        logger.error(e.getMessage());
+//                    }
 
-                    try {
-                        insertAccessHist(_userId, "Y","");
-                    } catch (Exception e) {
-                        logger.error(e.getMessage());
-                    }
-
-                    //model.addAllAttributes(paramMap);
-                    redirectAttr.addFlashAttribute(paramMap);
-
-                    String fwdUrl = paramMap.get("FWD_URL")==null?"":(String)paramMap.get("FWD_URL");
-                    if (!"".equals(fwdUrl)) {
-                        return "redirect:/foward.do";
-                    }
-
-                    return "redirect:/main.do";
+                    retrunMap.put("RESULT", "SUCCESS");
+                    retrunMap.put("redirect", "main");
+                    return  retrunMap;
 
                 } else {
-                    try {
-                        insertAccessHist(_userId, "N", "로그인 인증 실패");
-                    } catch (Exception e) {
-                        logger.error(e.getMessage());
-                    }
+//                    try {
+//                        insertAccessHist(_userId, "N", "로그인 인증 실패");
+//                    } catch (Exception e) {
+//                        logger.error(e.getMessage());
+//                    }
 
-                    model.addAttribute("message", getMessage("M1000022"));
-                    return "loginView";
+                    //model.addAttribute("message", getMessage("M1000022"));//
+
+                    retrunMap.put("RESULT", "ERROR");
+                    retrunMap.put("ERR_MSG", "로그인에 실패하였습니다. 자세한 내용은 관리자에게 문의하시기 바랍니다.");
+                    retrunMap.put("redirect", "login");
+                    return retrunMap;
                 }
-            }else {
-                // ■■■■■■ VENDOR 로그인 구간
-
-                if( isValidUser == true ) {
-                    List<String> userRoleList = loginAuthService.selectUserRoleListForLogin(paramMap);
-                    if (0==userRoleList.size())
-                    {
-                        try {
-                            insertAccessHist(_userId, "N", "메뉴권한 없음");
-                        } catch (Exception e) {
-                            logger.error(e.getMessage());
-                        }
-
-                        model.addAttribute("message", getMessage("M1000022"));
-                        return "loginView";
-                    }
-
-                    userInfo.put("ROLE_LIST", userRoleList);
-//					userInfo.put("PUR_USER", "N");
-//					if(userRoleList.contains("PUR002") || userRoleList.contains("PUR003") || userRoleList.contains("SYS001")) {
-//						//구매롤 유저
-//						userInfo.put("PUR_USER", "Y");
-//					}
-
-                    List<String> deptRoleList = loginAuthService.selectDeptRoleListForLogin(paramMap);
-                    userInfo.put("DEPT_ROLE", deptRoleList);
-
-                    paramMap.put("ROLE_LIST", userRoleList);
-                    paramMap.put("MODULE_TYPE", _moduleType);
-                    List<Map<String,Object>> userMenuList = loginAuthService.selectUserMenuList(paramMap);
-
-                    List<Map<String,Object>> moduleList = loginAuthService.selectModuleList(paramMap);
-
-                    LinkedHashMap<String,Object> topMenuLinkedMap = new LinkedHashMap<String,Object>();
-                    LinkedHashMap<String,Object> leftMenuLinkedMap = new LinkedHashMap<String,Object>();
-                    LinkedHashMap<String,Object> menuLinkedMap = new LinkedHashMap<String,Object>();
-
-                    if( userMenuList != null ) {
-                        String currTopMenuNo = "";
-
-
-                        List<Map<String,Object>> childMenuList = null;
-                        for( int i = 0, nSize = userMenuList.size(); i < nSize; i++) {
-                            Map<String,Object> menuInfo = userMenuList.get(i);
-                            String menuNo = StringUtils.defaultIfBlank((String)menuInfo.get("MENU_CD"), "");
-                            if( ! "".equals(menuNo)) {
-                                menuLinkedMap.put(menuNo, menuInfo);
-
-                                BigDecimal bdMenuDepth = new BigDecimal(String.valueOf(menuInfo.get("MENU_DEPTH")));
-                                if( bdMenuDepth.compareTo( new BigDecimal(1)) == 0 ) {
-                                    if( ! currTopMenuNo.equals( menuNo )) {
-                                        currTopMenuNo = menuNo;
-                                        childMenuList = new ArrayList<Map<String,Object>>();
-                                        menuInfo.put("CHILD_MENU_LIST", childMenuList);
-                                        topMenuLinkedMap.put(menuNo, menuInfo);
-                                    }
-                                }else {
-                                    if( bdMenuDepth.compareTo( new BigDecimal(2)) == 0 ) {
-                                        if( ! currTopMenuNo.equals( menuNo )) {
-                                            currTopMenuNo = menuNo;
-                                            childMenuList = new ArrayList<Map<String,Object>>();
-                                            menuInfo.put("CHILD_MENU_LIST", childMenuList);
-                                            leftMenuLinkedMap.put(menuNo, menuInfo);
-                                        }
-                                    } else {
-                                        if( childMenuList != null ) {
-                                            childMenuList.add(menuInfo);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    userInfo.put("BIZ_TOP_MENU_MAP", moduleList);
-                    userInfo.put("TOP_MENU_MAP", topMenuLinkedMap);
-                    userInfo.put("LEFT_MENU_MAP", leftMenuLinkedMap);
-                    userInfo.put("MENU_MAP", menuLinkedMap);
-
-                    List<Map<String,Object>> userFavoriteMenuList = loginAuthService.selectUserFavoriteMenuList(paramMap);
-                    userInfo.put("FAVORITE_MENU", userFavoriteMenuList);
-
-                    String srvType		=	"";
-                    String srvTypeName	=	"";
-                    if (PropertiesUtil.isRealMode()) {
-                        srvType		=	"REAL";
-                        srvTypeName =	"";
-                    } else if (PropertiesUtil.isDevMode()) {
-                        srvType		=	"DEV";
-                        srvTypeName =	"개발서버";
-                    } else {
-                        srvType		=	"LOCAL";
-                        srvTypeName =	"LOCAL SYSTEM";
-                    }
-                    userInfo.put("SRV_TYPE", srvType);
-                    userInfo.put("SRV_TYPE_NM", srvTypeName);
-                    userInfo.put("LOGIN_TYPE", "일반");
-
-                    /*
-                     * Open 준비
-                     * 개인정보 취급방침 동의, BP윤리서약서, SHE 서약 Session 담기
-                     */
-                    Map<String,Object> provChk = loginAuthService.selectUserProvChk(paramMap);
-
-                    if( provChk != null){
-                        userInfo.put("INFO_AGREE_YN",   StringUtil.nvl(provChk.get("INFO_AGREE_YN"),    "N"));
-                        userInfo.put("VOW_YN",          StringUtil.nvl(provChk.get("VOW_YN"),           "N"));
-                        userInfo.put("SHE_YN",          StringUtil.nvl(provChk.get("SHE_YN"),           "N"));
-
-                        userInfo.put("VOW_TARGET_YN",   StringUtil.nvl(provChk.get("VOW_TARGET_YN"),    "N"));
-                        userInfo.put("VOW_TARGET_APPR", StringUtil.nvl(provChk.get("VOW_TARGET_APPR"),  "N"));
-                    }
-
-                    UserSessionUtil.setUserSession(request, userInfo);
-
-                    if( logger.isDebugEnabled()) {
-                        logger.debug( "LOGIN_INFO =" + UserSessionUtil.getUserSession(request) );
-                    }
-
-                    try {
-                        insertAccessHist(_userId, "Y","");
-                    } catch (Exception e) {
-                        logger.error(e.getMessage());
-                    }
-
-                    return "redirect:/main.do";
-
-                } else {
-                    try {
-                        insertAccessHist(_userId, "N", "로그인 인증 실패");
-                    } catch (Exception e) {
-                        logger.error(e.getMessage());
-                    }
-//					redirectAttr.addAttribute("message", getMessage("M1000022"));
-//					return "redirect:/main.do";
-                    model.addAttribute("message", getMessage("M1000022"));
-                    return "loginView";
-                }
+            } else {
+                retrunMap.put("RESULT", "ERROR");
+                retrunMap.put("ERR_MSG", "로그인에 실패하였습니다. 자세한 내용은 관리자에게 문의하시기 바랍니다.");
+                retrunMap.put("redirect", "login");
+                return retrunMap;
             }
 
-        } catch (BizException se) {
-            logger.error(se.getExceptionCode());
-            model.addAttribute("message",se.getExceptionCode());
-
-            try {
-                insertAccessHist(_userId, "N",se.getMessage());
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
-            return "loginView";
-        } catch( Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            model.addAttribute("message", getMessage("M1000022"));
-            try {
-                insertAccessHist(_userId, "N", e.getMessage());
-            } catch (Exception e1) {
-                logger.error(e.getMessage());
-            }
-            return "loginView";
+
+//            retrunMap.put("RESULT", "ERROR");
+//            retrunMap.put("ERR_MSG", e.getMessage());
+
+//            try {
+//                insertAccessHist(_userId, "N", e.getMessage());
+//            } catch (Exception e1) {
+//                logger.error(e.getMessage());
+//            }
+
+            retrunMap.put("RESULT", "ERROR");
+            retrunMap.put("ERR_MSG", e.getMessage());
+            retrunMap.put("redirect", "login");
+            return retrunMap;
         }
+
     }
 
 }

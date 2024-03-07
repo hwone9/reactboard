@@ -22,9 +22,8 @@ const WorkTemplate = ({ children }) => {
     console.log("getWorkList");
 
     let resp = await util.process("get", `/work`, null);
-    if (resp.success) {
-      resp = resp.resData;
-      setWorkList(resp.data);
+    if (resp.RESULT==="SUCCESS") {
+      setWorkList(resp.RES.data);
     }
   };
 
@@ -35,8 +34,7 @@ const WorkTemplate = ({ children }) => {
     if (workItem) {
       let param = { work: workItem };
       let resp = await util.process("post", `/work`, param);
-      if (resp.success) {
-        resp = resp.resData;
+      if (resp.RESULT==="SUCCESS") {
         getWorkList();
       } else {
         alert("create fail!!!!");
@@ -54,8 +52,7 @@ const WorkTemplate = ({ children }) => {
       done: updateDone ? "Y" : "N",
     };
     let resp = await util.process("patch", `/work`, param);
-    if (resp.success) {
-      resp = resp.resData;
+    if (resp.RESULT==="SUCCESS") {
       getWorkList();
     } else {
       alert("update fail!!!");
@@ -67,8 +64,7 @@ const WorkTemplate = ({ children }) => {
     console.log("onRemove");
 
     let resp = await util.process("delete", `/work/${idx}`);
-    if (resp.success) {
-      resp = resp.resData;
+    if (resp.RESULT==="SUCCESS") {
       getWorkList();
     } else {
       alert("delete fail!!!!");

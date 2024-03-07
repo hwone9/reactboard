@@ -20,7 +20,7 @@ const BoardWrite = () => {
     // 2) 게시글 목록 데이터에 할당
     const saveBoard = async () => {
         let resp = await util.process("post",`/board`, board);
-        if (resp.success) {
+        if (resp.RESULT==="SUCCESS") {
             navigate('/board');
         }
     };
